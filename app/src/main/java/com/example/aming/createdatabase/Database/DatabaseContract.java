@@ -1,6 +1,4 @@
-package com.example.aming.createdatabase;
-
-import android.provider.BaseColumns;
+package com.example.aming.createdatabase.Database;
 
 public class DatabaseContract {
     //DataBase name
@@ -20,10 +18,10 @@ public class DatabaseContract {
 
     //String parameter for creating table method
     public static final String CREATE_TABLE = "CREATE TABLE " + DatabaseContract.TABLE_NAME
-            + " (" + DatabaseContract.COLUMN_ID + DatabaseContract.INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT" +DatabaseContract.COMMA
-            +DatabaseContract.COLUMN_TITLE+DatabaseContract.TEXT_TYPE+
-            DatabaseContract.COMMA+DatabaseContract.COLUMN_CONTENT+DatabaseContract.TEXT_TYPE+DatabaseContract.COMMA+
-            DatabaseContract.COLUMN_CREATE_DATE+DatabaseContract.TEXT_TYPE + ") ";
+            + " (" + DatabaseContract.COLUMN_ID +" "+ DatabaseContract.INTEGER_TYPE + " PRIMARY KEY AUTOINCREMENT" +DatabaseContract.COMMA
+            +DatabaseContract.COLUMN_TITLE+" "+DatabaseContract.TEXT_TYPE+
+            DatabaseContract.COMMA+DatabaseContract.COLUMN_CONTENT+" "+DatabaseContract.TEXT_TYPE+DatabaseContract.COMMA+
+            DatabaseContract.COLUMN_CREATE_DATE+" "+DatabaseContract.TEXT_TYPE + ") ";
 
     //String parameter for onUpgrade method
     public static final String DROP_TABLE ="DROPTABLE "+DatabaseContract.TABLE_NAME;

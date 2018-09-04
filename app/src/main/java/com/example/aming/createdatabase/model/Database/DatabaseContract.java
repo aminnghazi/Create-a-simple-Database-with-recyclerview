@@ -1,4 +1,4 @@
-package com.example.aming.createdatabase.Database;
+package com.example.aming.createdatabase.model.Database;
 
 public class DatabaseContract {
     //DataBase name

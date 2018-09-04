@@ -1,16 +1,20 @@
-package com.example.aming.createdatabase.Recycleview;
+package com.example.aming.createdatabase.views.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.example.aming.createdatabase.R;
 
+import com.example.aming.createdatabase.model.Database.DatabaseHelper;
+import com.example.aming.createdatabase.model.items.RecyclerviewItems;
+
 import java.util.List;
 
-public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapter.MyViewholder>{
+public class RecyclerviewAdapter extends Adapter<RecyclerviewAdapter.MyViewholder>{
     Context context;
     List<RecyclerviewItems> itemslist;
 
@@ -50,6 +54,7 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
     }
     @Override
     public MyViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
+        DatabaseHelper db=new DatabaseHelper(context);
        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerviewitem,parent,false);
        return new MyViewholder(v);
     }
@@ -59,10 +64,14 @@ public class RecyclerviewAdapter extends RecyclerView.Adapter<RecyclerviewAdapte
     RecyclerviewItems item=itemslist.get(position);
     holder.title.setText(item.getContent());
     holder.createdate.setText(item.getCratedate());
-    holder.id.setText(item.getId().toString());
-    holder.title.setText(item.getTitle());
+    holder.id.setText("ID = "+item.getId().toString());
+    holder.content.setText(item.getContent());
     }
-
+    public void additem(RecyclerviewItems item) {
+        itemslist.add(item);
+        int pos = itemslist.lastIndexOf(item);
+        notifyItemInserted(pos);
+    }
     @Override
     public int getItemCount() {
         return itemslist.size();

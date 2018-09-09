@@ -17,17 +17,23 @@ public class Operator {
         this.cntx = context;
     }
 
-        public boolean insertdata(String title, String content, String createdate) {
+        public RecyclerviewItems insertdata(RecyclerviewItems item) {
 
             DatabaseHelper helper = new DatabaseHelper(cntx);
             SQLiteDatabase db=helper.getWritableDatabase();
             ContentValues cv=new ContentValues();
-            cv.put(DatabaseContract.COLUMN_CONTENT,content);
-            cv.put(DatabaseContract.COLUMN_TITLE,title);
-            cv.put(DatabaseContract.COLUMN_CREATE_DATE,createdate);
+            cv.put(DatabaseContract.COLUMN_CONTENT,item.getContent());
+            cv.put(DatabaseContract.COLUMN_TITLE,item.getTitle());
+            cv.put(DatabaseContract.COLUMN_CREATE_DATE,item.getCratedate());
             long result = db.insert(DatabaseContract.TABLE_NAME,null,cv);
-            if (result == -1) return false;
-            else return true;
+            if (db.isOpen())db.close();
+            if (result == -1) {
+                return null;
+            }
+            else{
+                item.setId(result);
+                return item;
+            }
         }
 
         public ArrayList<RecyclerviewItems> getData() {
@@ -59,28 +65,6 @@ public class Operator {
             if (db.isOpen()) db.close();
 
             return itemslist;
-        }
-
-
-        public RecyclerviewItems getLastitem(){
-            DatabaseHelper helper = new DatabaseHelper(cntx);
-            SQLiteDatabase db = helper.getReadableDatabase();
-            Cursor c=db.rawQuery("select * from "+DatabaseContract.TABLE_NAME,null);
-            c.moveToLast();
-            int idIndex = c.getColumnIndex(DatabaseContract.COLUMN_ID);
-            long id = c.getLong(idIndex);
-
-            int titleIndex = c.getColumnIndex(DatabaseContract.COLUMN_TITLE);
-            String title = c.getString(titleIndex);
-
-            int contentIndex = c.getColumnIndex(DatabaseContract.COLUMN_CONTENT);
-            String content = c.getString(contentIndex);
-
-            int createDateIndex = c.getColumnIndex(DatabaseContract.COLUMN_CREATE_DATE);
-            String createDate = c.getString(createDateIndex);
-
-            RecyclerviewItems item = new RecyclerviewItems(id,title,content,createDate);
-            return item;
         }
         }
 

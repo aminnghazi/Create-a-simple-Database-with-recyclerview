@@ -12,7 +12,7 @@ public class RecyclerviewItems{
         this.content = content;
         this.cratedate = cratedate;
     }
-
+    public RecyclerviewItems(){}
     public String getTitle() {
         return title;
     }

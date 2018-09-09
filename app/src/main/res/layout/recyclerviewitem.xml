@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:layout_marginVertical="5dp"
     >
+    <android.support.v7.widget.ContentFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@+id/cardview"
+        android:clickable="false"
+        >
+    </android.support.v7.widget.ContentFrameLayout>
+
+
+
+
 <android.support.v7.widget.CardView
+    android:id="@+id/cardview"
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:theme="@style/Base.CardView">
@@ -56,4 +67,4 @@
             />
     </RelativeLayout>
 </android.support.v7.widget.CardView>
-</LinearLayout>
+</RelativeLayout>

@@ -5,8 +5,12 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +18,7 @@ import com.example.aming.createdatabase.R;
 
 import com.example.aming.createdatabase.model.Database.DatabaseHelper;
 import com.example.aming.createdatabase.model.items.RecyclerviewItems;
+import com.example.aming.createdatabase.views.interfaces.ItemsManagement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,19 +26,25 @@ import java.util.List;
 public class RecyclerviewAdapter extends Adapter<RecyclerviewAdapter.MyViewholder>{
     Context context;
     ArrayList<RecyclerviewItems> itemslist;
+    ItemsManagement im;
 
+    public void setItemsManagement(ItemsManagement im) {
+        this.im = im;
+    }
 
     public RecyclerviewAdapter(Context context, ArrayList<RecyclerviewItems> itemslist) {
         this.context = context;
         this.itemslist = itemslist;
     }
 
-    public class MyViewholder extends RecyclerView.ViewHolder{
+    public class MyViewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
         TextView id;
         TextView content;
         TextView title;
         TextView createdate;
+        ImageButton btnedit;
+        RecyclerviewItems selecteditem;
 
         public MyViewholder(View itemView) {
             super(itemView);
@@ -41,8 +52,34 @@ public class RecyclerviewAdapter extends Adapter<RecyclerviewAdapter.MyViewholde
             content = itemView.findViewById(R.id.content);
             title = itemView.findViewById(R.id.title);
             createdate = itemView.findViewById(R.id.createdate);
-            cardView = itemView.findViewById(R.id.cardview);
+            btnedit = itemView.findViewById(R.id.editbtn);
+            btnedit.setOnClickListener(this);
+            //cardView = itemView.findViewById(R.id.cardview);
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.editbtn:
+                    PopupMenu popup=new PopupMenu(context,btnedit);
+                    popup.inflate(R.menu.editpopup_menu);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            switch (item.getItemId()){
+                                case R.id.del_item:
+                                    int index = getAdapterPosition();
+                                    selecteditem = itemslist.get(index);
+                                    im.itemDeletSelected(selecteditem);
+
+                            default :
+                                return false;
+                            }
+                        }
+                    });
+                    popup.show();
+            }
         }
     }
 
@@ -73,7 +110,11 @@ public class RecyclerviewAdapter extends Adapter<RecyclerviewAdapter.MyViewholde
         int pos = itemslist.lastIndexOf(item);
         notifyItemInserted(pos);
     }
-
+    public void deletitem(RecyclerviewItems item){
+        int position = itemslist.indexOf(item);
+        itemslist.remove(position);
+        notifyItemRemoved(position);
+    }
 
     @Override
     public int getItemCount() {

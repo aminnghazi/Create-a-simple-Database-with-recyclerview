@@ -2,6 +2,7 @@ package com.example.aming.createdatabase.presenter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.Toast;
 
 import com.example.aming.createdatabase.model.Database.Operator;
 import com.example.aming.createdatabase.model.items.RecyclerviewItems;
@@ -14,13 +15,14 @@ import java.util.ArrayList;
 public class Mainpresenter implements MainPresenterContract{
     Context context;
     MainActivityContract ma;
+    Operator op;
     public Mainpresenter(Context context,MainActivity ma) {
         this.context = context;
         this.ma=ma;
     }
     @Override
     public void initialload() {
-    Operator op=new Operator(context);
+    op=new Operator(context);
         ArrayList<RecyclerviewItems> itemslist = op.getData();
         ma.applaunchItemslist(itemslist);
     }
@@ -31,7 +33,16 @@ public class Mainpresenter implements MainPresenterContract{
             ma.AddItem(newItem);
         else
             ma.AddItemError();
+    }
 
+    @Override
+    public void deletitemclicked(RecyclerviewItems item) {
+    boolean is_deleteed = op.deletFromDatabase(item);
+    if (is_deleteed==true){
+        Toast.makeText(context, "Item Deleted(Database)", Toast.LENGTH_SHORT).show();
+        ma.itemDeletion(item);
+    }
+    else Toast.makeText(context, "Item Cannot Be Deleted", Toast.LENGTH_SHORT).show();
     }
 }
 

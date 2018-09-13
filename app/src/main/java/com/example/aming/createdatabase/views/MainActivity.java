@@ -8,8 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
-
 import com.example.aming.createdatabase.R;
+import com.example.aming.createdatabase.views.interfaces.ItemsManagement;
 import com.example.aming.createdatabase.views.interfaces.MainActivityContract;
 import com.example.aming.createdatabase.presenter.Interfaces.MainPresenterContract;
 import com.example.aming.createdatabase.presenter.Mainpresenter;
@@ -19,7 +19,7 @@ import com.example.aming.createdatabase.model.items.RecyclerviewItems;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,MainActivityContract {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,MainActivityContract,ItemsManagement {
     //Ghazi Askar
     MainPresenterContract presenter;
     public RecyclerView recyclerView;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void applaunchItemslist(ArrayList<RecyclerviewItems> itemslist) {
         adapter=new RecyclerviewAdapter(this,itemslist);
+        adapter.setItemsManagement(this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -95,5 +96,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void AddItemError() {
         Toast.makeText(this, "Item not added(Recyclerview)", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void itemDeletSelected(RecyclerviewItems item) {
+        if (presenter!=null)presenter.deletitemclicked(item);
+    }
+
+    @Override
+    public void itemDeletion(RecyclerviewItems item) {
+        adapter.deletitem(item);
     }
 }

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.aming.createdatabase.model.items.RecyclerviewItems;
@@ -65,6 +66,20 @@ public class Operator {
             if (db.isOpen()) db.close();
 
             return itemslist;
+        }
+        public boolean deletFromDatabase(RecyclerviewItems item){
+        boolean is_deleted = true;
+        DatabaseHelper helper = new DatabaseHelper(cntx);
+        SQLiteDatabase db =helper.getWritableDatabase();
+        long id = item.getId();
+        db.delete(DatabaseContract.TABLE_NAME,
+                DatabaseContract.COLUMN_ID+ " = ? "
+                ,new String[]{String.valueOf(item.getId())});
+
+
+
+        if (db.isOpen())db.close();
+        return is_deleted;
         }
         }
 
